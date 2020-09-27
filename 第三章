@@ -9,4 +9,14 @@ print('平均球數',sum([5,9,6,8,7,10,6])/len([5,9,6,8,7,10,6]))
 
 for i in range(1,10):
     for j in range(1,10):
-        print(str(i)+'x'+str(j)+'='+str(i*j),end=' ')
+        print(str(i)+'x'+str(j)+'='+str(i*j),'\t',end='')
+        print()
+    
+
+string='I love you'
+print(string,sep='')
+for s in range(1000):
+    s='so '
+    print(s,end='')
+c=' much'
+print(c)
