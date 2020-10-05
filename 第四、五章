@@ -1,0 +1,54 @@
+#1
+# a='Simon Peter John'
+# b=a.split()
+# c='*'
+# for i in range(0,3):
+#     print(b[i][0],end='')
+#     print(c*(len(b[i])-1),end='')
+
+#2
+# list1=['Company 1','Company 2','Company 3'] 
+# list2=[]
+# for i in range(0,3):
+#     list2.append(list1[i].replace(' ','_'))
+# print(list2)
+
+#3
+# list1=[1,2,3,4,5,6]
+# list2=[]
+# for i in list1:
+#     list2.append(str(i)+'$')
+# print(list2)
+
+#4
+# list1=[1,2,3,4,5,6]
+# list2=[]
+# for i in list1:
+#     list2.append(str(i)+'$')
+# print(list2)
+# list3=[]
+# for i in range(0,6):
+#     list3.append(list2[i].replace('$',''))
+# print(list3)
+
+#5
+# list1=[1,2,3,4]
+# list2=[5,6,7,8]
+# print(list(zip(list1,list2)))
+
+
+#6
+s='I love and you love him and who loves who'
+a=s.split()
+print(a)
+#7
+print(set(a))
+keys=(set(a))
+#8
+values=[0 for i in keys]
+d={key:value for key,value in zip(keys,values)}
+print(d)
+#9
+for i in a:
+    d[i]+=1
+print(d)
