@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Sep 28 08:12:43 2020
-
-@author: cis-user
-"""
-
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -46,3 +39,11 @@ for a in tag_div:
 # print(soup.prettify())
 
 # r.test.to_csv('GetAllStock.csv',encoding='utf-8-sig')
+
+import csv
+
+with open('output.csv', 'w', newline='') as csvfile:
+  
+  writer = csv.writer(csvfile)
+
+  writer.writerow(a.text)
