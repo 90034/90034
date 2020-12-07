@@ -1,0 +1,99 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov 23 10:45:25 2020
+
+@author: cis-user
+"""
+
+import csv
+import requests
+import pandas as pf
+from io import StringIO
+import matplotlib.pyplot as plt
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
+from time import sleep
+import sys
+import time,datetime
+
+url = 'https://www.ettoday.net/news/news-list.htm'
+# key_word = '楊鎮寶'
+
+options = webdriver.ChromeOptions()
+options.add_argument('--ignore-certificate-errors')
+#options.add_argument('user-agent-[]'.format(headers))
+driver = webdriver.Chrome(chrome_options=options)
+
+
+driver.get(url)
+# driver.get("https://www.ettoday.net/news/news-list.htm")
+# driver.find_element_by_name("q").click()
+# driver.find_element_by_name("q").clear()
+# driver.find_element_by_name("q").send_keys(key_word)
+# driver.find_element_by_xpath("//div/div[4]").click()
+# driver.find_element_by_xpath("(//input[@name='btnK'])[2]").click()
+
+
+
+
+
+page=0
+with open('google_search1.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
+    writer = csv.writer(csvfile)
+    writer.writerow(('日期','分類','連結'))
+    writer.writerow(['標題'])
+
+    now_date = time.strftime("%Y%m%d")
+    day=int(now_date[-2:])
+
+
+    n_days1=1
+    
+
+    for i in range(0,n_days1):
+        
+    
+
+        now = datetime.datetime.now()
+        delta = datetime.timedelta(days=i)
+        n_days = now-delta
+        now1=now.strftime('%Y%m%d')
+        n_days1=n_days.strftime('%Y%m%d')
+    
+        m=int(n_days1[-4:-2])
+        M=str(m)
+        d=int(n_days1[-2:])
+        D=str(d)
+    
+    
+        driver.find_element_by_id("selM").click()
+        Select(driver.find_element_by_id("selM")).select_by_visible_text(M)
+        driver.find_element_by_id("selM").click()
+        driver.find_element_by_id("selD").click()
+        Select(driver.find_element_by_id("selD")).select_by_visible_text(D)
+        driver.find_element_by_id("selD").click()
+        driver.find_element_by_id("button").click()    
+
+
+    
+    for i in range(8):
+        page+=1
+        html = driver.page_source
+        sp=BeautifulSoup(html,"html.parser")
+        search_h3=sp.select("part_list_2 > h3 > a")
+        search_a=sp.select("part_list_2 > a")
+        search_span=sp.select("div.IsZvec > div > span.aCOpRe")
+        
+        for i in range(len(search_h3)):
+            print(page)
+            print(search_h3[i].text,end=' ')
+            print(search_a[i].get('href'))
+            print(search_span[i].text)
+
+            writer.writerow([search_span[i].text],[search_a[i]],[search_a[i].get('href')])
+            writer.writerow([search_h3[i].text])
+            
+            
+            driver.find_element_by_xpath("//a[@id='pnnext']/span[2]").click()
+        sleep(1)  # 必須加入等待，否則會有誤動作
