@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+import csv
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
+import sys
+import time,datetime
+
+url = 'https://www.ettoday.net/news/news-list.htm'
+# key_word = '楊鎮寶'
+
+options = webdriver.ChromeOptions()
+options.add_argument('--ignore-certificate-errors')
+driver = webdriver.Chrome(chrome_options=options)
+#options.add_argument('user-agent-[]'.format(headers))
+driver.get(url)
+
+
+
+page=0
+with open('抓5天','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
+    writer = csv.writer(csvfile)
+    writer.writerow(('日期','分類','連結'))
+    writer.writerow(['標題'])
+    
+    now_date = time.strftime("%Y%m%d")
+    day=int(now_date[-2:])
+    
+    for i in range(0,6):#抓幾天前
+        now = datetime.datetime.now()
+        delta = datetime.timedelta(days=i)
+        n_days = now-delta
+        now1=now.strftime('%Y%m%d')
+        n_days1=n_days.strftime('%Y%m%d')
+        
+        m=int(n_days1[-4:-2])
+        M=str(m)
+        d=int(n_days1[-2:])
+        D=str(d)
+        
+        
+        driver.find_element_by_id("selM").click()
+        Select(driver.find_element_by_id("selM")).select_by_visible_text(M)
+        driver.find_element_by_id("selM").click()
+        driver.find_element_by_id("selD").click()
+        Select(driver.find_element_by_id("selD")).select_by_visible_text(D)
+        driver.find_element_by_id("selD").click()
+        driver.find_element_by_id("button").click()    
+
+        for i in range(1):#抓幾遍
+            page+=1
+            html = driver.page_source
+            sp=BeautifulSoup(html,"html.parser")
+            search_a=sp.select("div.part_list_2 > h3 > a ")#標題
+            search_span=sp.select("div.part_list_2 > h3 > span")#時間
+            search_em=sp.select("div.part_list_2 > h3 > em")#分類
+            
+            for i in range(5):#抓幾篇
+                print(page)
+                print(search_span[i].text)
+                print(search_em[i].text)
+                print(search_a[i].get('href'))
+                print(search_a[i].text)
+                
+                writer.writerow([search_span[i].text,search_em[i].text,search_a[i].get('href')])
+                writer.writerow([search_a[i].text])
+    
+
+    
+        # driver.find_element_by_xpath("//a[@id='pnnext']/span[2]").click()
+        time.sleep(3)  # 必須加入等待，否則會有誤動作
