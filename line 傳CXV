@@ -1,0 +1,31 @@
+
+# with open('google_search.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
+#     writer = csv.writer(csvfile)
+#     writer.writerow(('標題','連結'))
+    
+    
+    b=5
+
+    for i in range(1):
+        search_a=soup.select("div.part_list_2 > h3 > a ")#標題
+        search_span=soup.select("div.part_list_2 > h3 > span")#時間
+        search_em=soup.select("div.part_list_2 > h3 > em")#分類
+    
+        for i in range(b):
+            print(search_a[i].text)
+            print('https://www.ettoday.net',search_a[i].get('href'))
+            print(search_span[i].text)
+            print(search_em[i].text)
+    
+    # for i in range(b):
+    #     headers = {
+    #             "Authorization": "Bearer " + "iufXjsRlXhj8yJgh8lDlvAIB8ysTJP5fs199tmN8Qux",
+    #             "Content-Type": "application/x-www-form-urlencoded"
+    #         }
+        
+    #     params = {"message": search_a[i].text + "\n" + "https://www.ettoday.net" + search_a[i].get('href')}
+    #     r = requests.post("https://notify-api.line.me/api/notify",
+    #                           headers=headers, params=params)
+    #     print(r.status_code)  #200
+                
+    #     writer.writerow([search_a[i].text,'https://www.ettoday.net',search_a[i].get('href')])
